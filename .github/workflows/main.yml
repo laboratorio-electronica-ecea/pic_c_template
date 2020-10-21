@@ -21,7 +21,7 @@ jobs:
       - uses: actions/checkout@v2
 
       - name: Build with MPLAB X and XC8
-        uses: nahueespinosa/ghactions-mplabx-xc8@6c898a28626037721f7f44e05f0c1fa8030f714b
+        uses: nahueespinosa/ghactions-mplabx-xc8@a7ccffeb94f9a630805437f3ad5faf000f2512da
         with:
           project: .
           configuration: default

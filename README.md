@@ -1,6 +1,6 @@
 # PIC C Template 
 
-[![Build Status](https://travis-ci.org/nahueespinosa/pic_c_template.svg?branch=master)](https://travis-ci.org/nahueespinosa/pic_c_template)
+![Build](https://github.com/nahueespinosa/pic_c_template/workflows/Build/badge.svg)
 
 Plantilla para ejercicios con PIC16F887 en lenguaje C.  
 Se utiliza el entorno de desarrollo MPLAB X v5.30 y el compilador XC8 v2.20.
@@ -11,11 +11,6 @@ Se utiliza el entorno de desarrollo MPLAB X v5.30 y el compilador XC8 v2.20.
 - nbproject/project.xml
 - Makefile
 - main.c
-
-## Archivos para integración continua (CI)
-
-- .travis.yml
-- travis-install-dependencies.sh
 
 ## Archivos adicionales
 

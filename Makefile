@@ -105,9 +105,16 @@ help: .help-post
 # Add your post 'help' code here...
 
 
+# test
+test: test-impl
+	@test/test.run
+
+test-impl:
+	@gcc main.c test/test.c -o test/test.run -Itest -lpthread -Wno-int-to-pointer-cast
+
 
 # include project implementation makefile
-include nbproject/Makefile-impl.mk
+-include nbproject/Makefile-impl.mk
 
 # include project make variables
-include nbproject/Makefile-variables.mk
+-include nbproject/Makefile-variables.mk

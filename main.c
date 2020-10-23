@@ -54,7 +54,7 @@ void gpio_config();
 /* ------------------------ Implementación de funciones --------------------- */
 void main(void) {               // Función principal
     gpio_config();              // Inicializo las entradas y salidas
-    
+
     PIN_LED1 = 0;               // Apago el LED1
     
     while(1) {                  // Super loop

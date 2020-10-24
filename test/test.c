@@ -3,25 +3,9 @@
 #include <stdio.h>
 #include <pthread.h>
 
-volatile STATUSbits_t STATUSbits;
-volatile INTCONbits_t INTCONbits;
-volatile ANSELbits_t  ANSELbits  = { .byte = 0xFF };
-volatile ANSELHbits_t ANSELHbits = { .byte = 0xFF };
-volatile PORTAbits_t  PORTAbits  = { .byte = 0xFF };
-volatile TRISAbits_t  TRISAbits  = { .byte = 0xFF };
-volatile PORTBbits_t  PORTBbits  = { .byte = 0xFF };
-volatile TRISBbits_t  TRISBbits  = { .byte = 0xFF };
-volatile PORTCbits_t  PORTCbits  = { .byte = 0xFF };
-volatile TRISCbits_t  TRISCbits  = { .byte = 0xFF };
-volatile PORTDbits_t  PORTDbits  = { .byte = 0xFF };
-volatile TRISDbits_t  TRISDbits  = { .byte = 0xFF };
-volatile PORTEbits_t  PORTEbits  = { .byte = 0xFF };
-volatile TRISEbits_t  TRISEbits  = { .byte = 0xFF };
-volatile BAUDCTLbits_t BAUDCTLbits = { .byte = 0xFF };
-volatile ADCON1bits_t ADCON1bits;
-
-void user_main( void );
-int test( void );
+void user_main   ( void );
+int  test        ( void );
+void setup_memory( void );
 
 static void* test_helper( void *ptr ) {
     return (void*) test();
@@ -42,11 +26,13 @@ static void* user_main_helper( void *ptr ) {
  * @return int  Devuelve 0 si las pruebas fueron exitosas, distinto de 0
  *              si hubo un error.
  */
-int main() {
+int main( void ) {
     pthread_t test_thread;
     pthread_t main_thread;
 
     int ret1, ret2, result;
+
+    setup_memory();
     
     ret1 = pthread_create( &test_thread, NULL, test_helper, NULL);
     ret2 = pthread_create( &main_thread, NULL, user_main_helper, NULL);
@@ -60,6 +46,20 @@ int main() {
     }
     
     return result;
+}
+
+/**
+ * @brief Configuración de memoria después del reset
+ * 
+ */
+void setup_memory( void ) {
+    PORTA = 0xFF;
+    PORTB = 0xFF;
+    PORTC = 0xFF;
+    PORTD = 0xFF;
+    PORTE = 0xFF;
+
+    INTCON = 0x00;
 }
 
 /**

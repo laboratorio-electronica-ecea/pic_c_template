@@ -110,7 +110,7 @@ test: test-impl
 	@test/test.run
 
 test-impl:
-	@gcc main.c test/test.c -o test/test.run -Itest -lpthread -Wno-int-to-pointer-cast
+	@gcc test/link.ld main.c test/test.c -o test/test.run -Itest -lpthread -Wno-int-to-pointer-cast -D__XC8 -D_LIB_BUILD
 
 
 # include project implementation makefile

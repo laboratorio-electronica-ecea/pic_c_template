@@ -19,7 +19,7 @@ Se utiliza el entorno de desarrollo MPLAB X v5.30 y el compilador XC8 v2.20.
     Proyecto de `Proteus Design Suite 8.9` utilizado para simulación.
 
 - mplab_conf.zip:  
-    Archivo de opciones exportado del MPLAB X IDE.  
+    Archivo de opciones exportado del `MPLAB X IDE`.  
     Se puede importar a partir del menú `Tools -> Options -> Import...`.
 
 - .gitignore:  

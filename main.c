@@ -3,8 +3,7 @@
  * Autor:
  *
  * Descripción: 
- *        Este programa espera que se presione una tecla y luego enciende
- *        un led.
+ *        Cuando se presiona la TEC1 togglea el LED1.
  */
 
 #include <xc.h>
@@ -59,7 +58,11 @@ void main(void) {               // Función principal
     
     while(1) {                  // Super loop
         if( PIN_TEC1 == 0 ) {   // Espero que se presione la TEC1
-            PIN_LED1 = 1;       // Enciendo el LED1
+            __delay_ms(40);
+            PIN_LED1 = !PIN_LED1;       // Enciendo el LED1
+
+            while( PIN_TEC1 == 0 );
+            __delay_ms(40);
         }
 
         __delay_ms(10);

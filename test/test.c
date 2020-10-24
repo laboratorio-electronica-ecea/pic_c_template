@@ -3,6 +3,25 @@
 #include <stdio.h>
 #include <pthread.h>
 
+/**
+ * @brief Macro para simular rebotes mecánicos en un gpio
+ * 
+ * Al finalizar termina en el estado opuesto al inicial.
+ * 
+ * @param pin       GPIO seleccionado
+ * @param times     Cantidad de rebotes
+ */
+#define gpio_toggle_bounce(pin, times)  \
+    for (int i = 0; i < (times * 2) + 1; i++) { pin = !pin; __delay_ms(3); }    
+
+#define PIN_LED1    PORTEbits.RE2
+#define TRIS_LED1   TRISEbits.TRISE2
+#define ANS_LED1    ANSELbits.ANS7
+
+#define PIN_TEC1    PORTBbits.RB0
+#define TRIS_TEC1   TRISBbits.TRISB0
+#define ANS_TEC1    ANSELHbits.ANS12
+
 void user_main   ( void );
 void setup_memory( void );
 int  test        ( void );
@@ -84,15 +103,23 @@ int test( void ) {
         return 1;
     }
 
-    __delay_ms(10);
-    PORTBbits.RB0 = 0;              // Presiono la TEC1
-    __delay_ms(100);
-    PORTBbits.RB0 = 1;              // Suelto la TEC1
-    
-    __delay_ms(10);
-    if( PORTEbits.RE2 != 1 ) {
-        printf("LED1 no queda encendido después de presionar la TEC1.\n");
-        return 1;
+    PIN_TEC1 = 1;
+
+    for( int j = 0 ; j < 5 ; j++ ) {
+        __delay_ms(100);
+        gpio_toggle_bounce(PIN_TEC1, j);
+        __delay_ms(100);
+        gpio_toggle_bounce(PIN_TEC1, j);
+
+        __delay_ms(100);
+        if( PIN_LED1 == j%2 ) {
+            printf(
+                "El LED1 no queda %s después de presionar la TEC1 por %d° vez.\n",
+                j%2 == 0 ? "encendido" : "apagado",
+                j+1
+            );
+            return 1;
+        }
     }
 
     return 0;
@@ -107,28 +134,28 @@ int test( void ) {
 int test_config( void ) {
     int ret_value = 0;
 
-    if( ANSELHbits.ANS12 != 0 ) {
-        printf("TEC1 está configurado como entrada analógica.\n");
+    if( ANS_TEC1 != 0 ) {
+        printf("La TEC1 está configurada como entrada analógica.\n");
         ret_value = 1;
     }
 
-    if( ANSELbits.ANS7 != 0 ) {
-        printf("LED1 está configurado como entrada analógica.\n");
+    if( TRIS_TEC1 != 1 ) {
+        printf("La TEC1 no está configurada como entrada.\n");
+        ret_value = 1;
+    }
+
+    if( ANS_LED1 != 0 ) {
+        printf("El LED1 está configurado como entrada analógica.\n");
         ret_value = 1;
     }
     
-    if( TRISEbits.TRISE2 != 0 ) {
-        printf("LED1 no está configurado como salida.\n");
+    if( TRIS_LED1 != 0 ) {
+        printf("El LED1 no está configurado como salida.\n");
         ret_value = 1;
     }
 
-    if( TRISBbits.TRISB0 != 1 ) {
-        printf("TEC1 no está configurado como entrada.\n");
-        ret_value = 1;
-    }
-
-    if( PORTEbits.RE2 != 0 ) {
-        printf("LED1 no queda apagado al inicio.\n");
+    if( PIN_LED1 != 0 ) {
+        printf("El LED1 no queda apagado al inicio.\n");
         ret_value = 1;
     }
 

@@ -5,8 +5,8 @@
 
 #include <pic16f887.h>
 
-#define __delay_ms(x)   usleep(x * 1000)
 #define __delay_us(x)   usleep(x)
+#define __delay_ms(x)   for( int delay_counter = 0; delay_counter < x ; delay_counter++ ) __delay_us(1000);
 #define interrupt
 
 // Si este no es el archivo de implementación de tests, 

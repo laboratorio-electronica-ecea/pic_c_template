@@ -1,5 +1,7 @@
 #define TEST_IMP
 #include <xc.h>
+#include <stdio.h>
+#include <pthread.h>
 
 volatile STATUSbits_t STATUSbits;
 volatile INTCONbits_t INTCONbits;
@@ -15,6 +17,8 @@ volatile PORTDbits_t  PORTDbits  = { .byte = 0xFF };
 volatile TRISDbits_t  TRISDbits  = { .byte = 0xFF };
 volatile PORTEbits_t  PORTEbits  = { .byte = 0xFF };
 volatile TRISEbits_t  TRISEbits  = { .byte = 0xFF };
+volatile BAUDCTLbits_t BAUDCTLbits = { .byte = 0xFF };
+volatile ADCON1bits_t ADCON1bits;
 
 void user_main( void );
 int test( void );

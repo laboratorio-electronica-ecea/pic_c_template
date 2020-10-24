@@ -1,10 +1,6 @@
 #ifndef __XC_H__
 #define __XC_H__
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <time.h>
-#include <pthread.h>
 #include <unistd.h>
 
 #define __delay_ms(x)   usleep(x * 1000)
@@ -219,6 +215,31 @@ typedef union {
     unsigned char byte;
 } ANSELHbits_t;
 
+typedef union {
+    struct {
+        unsigned ABDEN      :1;
+        unsigned WUE        :1;
+        unsigned            :1;
+        unsigned BRG16      :1;
+        unsigned SCKP       :1;
+        unsigned            :1;
+        unsigned RCIDL      :1;
+        unsigned ABDOVF     :1;
+    };
+    unsigned char byte;
+} BAUDCTLbits_t;
+
+typedef union {
+    struct {
+        unsigned            :4;
+        unsigned VCFG0      :1;
+        unsigned VCFG1      :1;
+        unsigned            :1;
+        unsigned ADFM       :1;
+    };
+    unsigned char byte;
+} ADCON1bits_t;
+
 extern volatile STATUSbits_t STATUSbits;
 extern volatile INTCONbits_t INTCONbits;
 extern volatile ANSELbits_t ANSELbits;
@@ -233,6 +254,8 @@ extern volatile PORTDbits_t PORTDbits;
 extern volatile TRISDbits_t TRISDbits;
 extern volatile PORTEbits_t PORTEbits;
 extern volatile TRISEbits_t TRISEbits;
+extern volatile BAUDCTLbits_t BAUDCTLbits;
+extern volatile ADCON1bits_t ADCON1bits;
 
 #define STATUS  STATUSbits.byte
 #define INTCON  INTCONbits.byte
@@ -248,6 +271,26 @@ extern volatile TRISEbits_t TRISEbits;
 #define TRISC   TRISCbits.byte
 #define TRISD   TRISDbits.byte
 #define TRISE   TRISEbits.byte
+#define BAUDCTL BAUDCTLbits.byte
+#define ADCON1  ADCON1bits.byte
+
+#define RBIF    INTCONbits.RBIF
+#define INTF    INTCONbits.INTF
+#define T0IF    INTCONbits.T0IF
+#define RBIE    INTCONbits.RBIE
+#define INTE    INTCONbits.INTE
+#define T0IE    INTCONbits.T0IE
+#define PEIE    INTCONbits.PEIE
+#define GIE     INTCONbits.GIE
+
+#define CARRY   STATUSbits.CARRY;
+#define DC      STATUSbits.DC;
+#define ZERO    STATUSbits.ZERO;
+#define nPD     STATUSbits.nPD;
+#define nTO     STATUSbits.nTO;
+#define RP0     STATUSbits.RP0;
+#define RP1     STATUSbits.RP1;
+#define IRP     STATUSbits.IRP;
 
 // Si este no es el archivo de implementación de tests, 
 // reemplazo el punto de entrada en el programa de usuario

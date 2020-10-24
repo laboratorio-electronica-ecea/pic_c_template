@@ -86,7 +86,7 @@ void setup_memory( void ) {
     TRISE = 0xFF;
 
     INTCON = 0x00;
-    ANSEL = 0xFF;
+    ANSEL  = 0xFF;
     ANSELH = 0xFF;
 }
 

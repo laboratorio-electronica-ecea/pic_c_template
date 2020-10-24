@@ -12,7 +12,7 @@
  * @param times     Cantidad de rebotes
  */
 #define gpio_toggle_bounce(pin, times)  \
-    for (int i = 0; i < (times * 2) + 1; i++) { pin = !pin; __delay_ms(3); }    
+    for (int gpio_i = 0; gpio_i < (times * 2) + 1; gpio_i++) { pin = !pin; __delay_ms(3); }    
 
 #define PIN_LED1    PORTEbits.RE2
 #define TRIS_LED1   TRISEbits.TRISE2
@@ -105,18 +105,18 @@ int test( void ) {
 
     PIN_TEC1 = 1;
 
-    for( int j = 0 ; j < 5 ; j++ ) {
+    for( int i = 0 ; i < 5 ; i++ ) {
         __delay_ms(100);
-        gpio_toggle_bounce(PIN_TEC1, j);
+        gpio_toggle_bounce(PIN_TEC1, i);
         __delay_ms(100);
-        gpio_toggle_bounce(PIN_TEC1, j);
+        gpio_toggle_bounce(PIN_TEC1, i);
 
         __delay_ms(100);
-        if( PIN_LED1 == j%2 ) {
+        if( PIN_LED1 == i%2 ) {
             printf(
                 "El LED1 no queda %s después de presionar la TEC1 por %d° vez.\n",
-                j%2 == 0 ? "encendido" : "apagado",
-                j+1
+                i%2 == 0 ? "encendido" : "apagado",
+                i+1
             );
             return 1;
         }

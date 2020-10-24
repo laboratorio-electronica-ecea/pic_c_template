@@ -4,8 +4,9 @@
 #include <pthread.h>
 
 void user_main   ( void );
-int  test        ( void );
 void setup_memory( void );
+int  test        ( void );
+int  test_config ( void );
 
 static void* test_helper( void *ptr ) {
     return (void*) test();
@@ -26,7 +27,7 @@ static void* user_main_helper( void *ptr ) {
  * @return int  Devuelve 0 si las pruebas fueron exitosas, distinto de 0
  *              si hubo un error.
  */
-int main( void ) {
+int main( int arc, char *arcv[] ) {
     pthread_t test_thread;
     pthread_t main_thread;
 
@@ -40,9 +41,9 @@ int main( void ) {
     pthread_join( test_thread, (void *)&result );
 
     if( result == 0 ) {
-        printf("Test successful\n");
+        printf("¡Felicitaciones! Las pruebas automáticas fueron exitosas.\n");
     } else {
-        printf("Test failed\n");
+        printf("Las pruebas automáticas fallaron, por favor revisa el código.\n");
     }
     
     return result;
@@ -59,7 +60,15 @@ void setup_memory( void ) {
     PORTD = 0xFF;
     PORTE = 0xFF;
 
+    TRISA = 0xFF;
+    TRISB = 0xFF;
+    TRISC = 0xFF;
+    TRISD = 0xFF;
+    TRISE = 0xFF;
+
     INTCON = 0x00;
+    ANSEL = 0xFF;
+    ANSELH = 0xFF;
 }
 
 /**
@@ -71,17 +80,57 @@ void setup_memory( void ) {
 int test( void ) {
 
     __delay_ms(200);
-    if( PORTEbits.RE2 != 0 ) {      // Verifico que el LED1 esté apagado
+    if( test_config() != 0 ) {
         return 1;
     }
 
     __delay_ms(10);
     PORTBbits.RB0 = 0;              // Presiono la TEC1
+    __delay_ms(100);
+    PORTBbits.RB0 = 1;              // Suelto la TEC1
     
     __delay_ms(10);
-    if( PORTEbits.RE2 != 1 ) {      // Verifico que el LED1 esté encendido
+    if( PORTEbits.RE2 != 1 ) {
+        printf("LED1 no queda encendido después de presionar la TEC1.\n");
         return 1;
     }
 
     return 0;
+}
+
+/**
+ * @brief Pruebas de configuración inicial de registros
+ * 
+ * @return int  Devuelve 0 si las pruebas fueron exitosas, distinto de 0
+ *              si hubo un error.
+ */
+int test_config( void ) {
+    int ret_value = 0;
+
+    if( ANSELHbits.ANS12 != 0 ) {
+        printf("TEC1 está configurado como entrada analógica.\n");
+        ret_value = 1;
+    }
+
+    if( ANSELbits.ANS7 != 0 ) {
+        printf("LED1 está configurado como entrada analógica.\n");
+        ret_value = 1;
+    }
+    
+    if( TRISEbits.TRISE2 != 0 ) {
+        printf("LED1 no está configurado como salida.\n");
+        ret_value = 1;
+    }
+
+    if( TRISBbits.TRISB0 != 1 ) {
+        printf("TEC1 no está configurado como entrada.\n");
+        ret_value = 1;
+    }
+
+    if( PORTEbits.RE2 != 0 ) {
+        printf("LED1 no queda apagado al inicio.\n");
+        ret_value = 1;
+    }
+
+    return ret_value;
 }

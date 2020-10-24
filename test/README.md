@@ -25,3 +25,18 @@ Esta implementación crea dos *threads* a partir de dos funciones. Uno para el p
 La función `setup_memory` permite definir el estado inicial de los registros pertinentes.
 
 La implementación actual no es un entorno de simulación de cada periférico del microcontrolador. Simplemente permite hacer pruebas para validar el contenido de registros a partir de los valores esperados así como la reacción del sistema a las modificaciones externas.
+
+Para compilar, desde la carpeta del repositorio, ejecutar:
+
+```
+$ make test
+```
+
+Internamente ejecuta estos comandos:
+
+```
+$ gcc test/link.ld main.c test/test.c -o test/test.run -Itest -lpthread -Wno-int-to-pointer-cast -D__XC8 -D_LIB_BUILD
+
+$ test/test.run
+
+```

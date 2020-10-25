@@ -56,29 +56,36 @@ void main(void) {                       // Función principal
 
     PIN_LED1 = 0;                       // Apago el LED1
     
-    while(1) {  // Super loop, https://pbs.twimg.com/media/BafQje7CcAAN5en.jpg
+    while(1) {                          // Super loop
+        // Ver este link: https://pbs.twimg.com/media/BafQje7CcAAN5en.jpg
+        
         if( PIN_TEC1 == 0 ) {           // Espero que se presione la TEC1
             __delay_ms(40);             // Delay antirrebote
             
-            PIN_LED1 = !PIN_LED1;       // Enciendo el LED1
+            PIN_LED1 = !PIN_LED1;       // Toggle LED1
 
             while( PIN_TEC1 == 0 );     // Espero que se suelte la TEC1
             __delay_ms(40);             // Delay antirrebote
         }
     }
     
+    // NO DEBE LLEGAR NUNCA AQUÍ, debido a que este programa se ejecuta
+    // directamente sobre un microcontrolador y no es llamado por un ningún
+    // sistema operativo, como en el caso de un programa para PC.
+    
     return;
 }
 
-void interrupt isr() {          // Rutina de atención de interrupciones
-
+void interrupt isr() {                  // Rutina de atención de interrupciones
+    // Esta rutina debe ejecutarse rápidamente sin delays ni loops infinitos.
+    // Recuerda colocar en 0 el flag que provocó la interrupción.
 }
 
 void gpio_config() {
-    ANSEL = 0;                  // Configuro todas las entradas
-    ANSELH = 0;                 //   como digitales
+    ANSEL = 0;                          // Configuro todas las entradas
+    ANSELH = 0;                         // como digitales
     
-    TRIS_TEC1 = 1;              // Configuro la TEC1 como entrada
-    TRIS_LED1 = 0;              // Configuro el LED1 como salida
+    TRIS_TEC1 = 1;                      // Configuro la TEC1 como entrada
+    TRIS_LED1 = 0;                      // Configuro el LED1 como salida
 }
 /* ------------------------ Fin de archivo ---------------------------------- */

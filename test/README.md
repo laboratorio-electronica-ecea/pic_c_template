@@ -7,7 +7,7 @@ Estos archivos proveen un entorno de testing que puede compilarse con `gcc` para
 
 ## Archivos
 
-- link.ld:  
+- linker.ld:  
     Linker script que permite simular la memoria RAM del PIC16F887.
 - pic16f887.h:  
     Header file para el PIC16F887 parte del `MPLAB X IDE`.

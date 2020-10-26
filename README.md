@@ -1,7 +1,7 @@
 # PIC C Template 
 
-![Build](https://github.com/nahueespinosa/pic_c_template/workflows/Build/badge.svg)
-![Test](https://github.com/nahueespinosa/pic_c_template/workflows/Test/badge.svg)
+![Build](../../workflows/Build/badge.svg)
+![Test](../../workflows/Test/badge.svg)
 
 Plantilla para ejercicios con PIC16F887 en lenguaje C.  
 Se utiliza el entorno de desarrollo MPLAB X v5.30 y el compilador XC8 v2.20.
